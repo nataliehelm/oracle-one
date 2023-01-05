@@ -1,0 +1,89 @@
+<canvas width="600" height="400"></canvas>
+
+
+<script>
+
+    //Ejercicio 5 disenhando con el mouse
+
+    var pantalla = document.querySelector('canvas');
+    var pincel = pantalla.getContext('2d');
+    var paleta = ["red", "green", "blue"];
+    var dimPaleta = 50;
+    var color = "blue";
+
+
+    pincel.fillStyle = 'grey';
+    pincel.fillRect(0, 0, 600, 400);
+    var x = 0;
+    for (var i = 0; i < paleta.length; i++) {
+        pincel.fillStyle = paleta[i];
+        pincel.fillRect(x, 0, dimPaleta, dimPaleta);
+        x = x + dimPaleta;
+
+    }
+
+    function cambiarColor(evento) {
+        var x = evento.pageX - pantalla.offsetLeft;
+        var y = evento.pageY - pantalla.offsetTop;
+
+        if ((x >= 0) &&
+            (x <= 50) &&
+            (y >= 0) &&
+            (y <= 50)) {
+            color = paleta[0]
+        }
+        if ((x >= 51) &&
+            (x <= 100) &&
+            (y >= 0) &&
+            (y <= 50)) {
+            color = paleta[1]
+        }
+        if ((x >= 101) &&
+            (x <= 150) &&
+            (y >= 0) &&
+            (y <= 50)) {
+            color = paleta[2]
+        }
+    }
+
+    var puedoDibujar = false;
+
+    function dibujarCirculo(evento) {
+
+        if (puedoDibujar) {
+            var x = evento.pageX - pantalla.offsetLeft;
+            var y = evento.pageY - pantalla.offsetTop;
+
+            if ((x >= 0) &&
+                (x <= 150) &&
+                (y >= 0) &&
+                (y <= 50)) {
+                puedoDibujar = false;
+            }
+            pincel.fillStyle = color;
+            pincel.beginPath();
+            pincel.arc(x, y, 5, 0, 2 * 3.14);
+            pincel.fill();
+        }
+    }
+
+
+    pantalla.onmousemove = dibujarCirculo;
+
+    function habilitarDibujar() {
+
+        puedoDibujar = true;
+    }
+
+    function deshabilitarDibujar() {
+
+        puedoDibujar = false;
+    }
+
+    pantalla.onmousedown = habilitarDibujar;
+
+    pantalla.onmouseup = deshabilitarDibujar;
+
+    pantalla.onclick = cambiarColor;
+
+</script>
